@@ -19,7 +19,6 @@ const Home: React.FC = () => {
 
     return(
         <>
-            
             <IonMenu contentId="main-content">
                 <IonHeader>
                     <IonToolbar>
@@ -40,7 +39,7 @@ const Home: React.FC = () => {
                 <IonList>
                     {profiles.map((profile:any) =>(
                         <IonItem key={profile.id}>
-                            <IonLabel><IonImg src={profile.picture.original.url}></IonImg>{profile.name}   {profile.stats.totalFollowers} followers</IonLabel>
+                            <IonLabel><IonImg src={profile.picture.original.url}></IonImg>{profile.name}    {profile.stats.totalFollowers} followers</IonLabel>
                         </IonItem>
                     ))}
                 </IonList>
