@@ -29,3 +29,24 @@ export const authenticate = gql`
     }
   }
 `
+
+export const exploreProfiles = gql`
+  query ExploreProfiles {
+    exploreProfiles(request: { sortCriteria: MOST_FOLLOWERS }) {
+      items {
+        id
+        name
+        picture {
+          ... on MediaSet {
+            original {
+              url
+            }
+          }
+        }
+        stats {
+          totalFollowers
+        }
+      }
+    }
+  }
+`

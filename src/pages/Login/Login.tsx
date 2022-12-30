@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonContent, IonGrid, IonHeader, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButtons, IonContent, IonGrid, IonHeader, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonTabButton, IonTitle, IonToolbar, IonRouterLink, IonLabel, IonItem } from '@ionic/react';
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { Route } from 'react-router';
@@ -60,27 +60,18 @@ const Login: React.FC = () => {
       <IonPage>
         <IonHeader>
           <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
             <IonTitle>Se connecter</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen>
+        <IonContent class="center">
           <IonRouterOutlet>
             <Route path="/app" component={App} exact={true} />
           </IonRouterOutlet>
           <IonGrid fixed={true}>
             <IonRow>
-              {! address && <IonButton onClick={connect}>Connect Wallet</IonButton> }
-            </IonRow>
-            <IonRow>
-              { address && !token && <IonButton onClick={login}>Se connecter</IonButton> }
-            </IonRow>
-            <IonRow>
-            { address && token && 
-              <IonButton href='/login'>Se connecter</IonButton>
-            }
+              {! address && <IonTabButton onClick={connect}>Se connecter au Wallet</IonTabButton> }
+              { address && !token && <IonTabButton onClick={login}>Se connecter</IonTabButton> }
+              { address && token && <IonRouterLink routerLink="/app">Accéder à l'application</IonRouterLink> }
             </IonRow>
           </IonGrid>
         </IonContent>
