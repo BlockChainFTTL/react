@@ -51,23 +51,14 @@ export const exploreProfiles = gql`
   }
 `
 
-export const matchingProfiles = gql`
-query Search {
-  search(request: {
-    query: "josh",
-    type: PROFILE
-  }) {
+export const searchProfiles = gql`
+query SearchProfiles ($text: Search!) {
+  search(request: { query: $text, type: PROFILE }) {
     ... on ProfileSearchResult {
-      __typename 
       items {
         ... on Profile {
           ...ProfileFields
         }
-      }
-      pageInfo {
-        prev
-        totalCount
-        next
       }
     }
   }
@@ -79,7 +70,7 @@ fragment MediaFields on Media {
 }
 
 fragment ProfileFields on Profile {
-  profileId: id,
+  profileId: id
   name
   bio
   attributes {
@@ -135,17 +126,17 @@ fragment ProfileFields on Profile {
   }
   followModule {
     ... on FeeFollowModuleSettings {
-    type
-    amount {
-      asset {
-        name
-        symbol
-        decimals
-        address
+      type
+      amount {
+        asset {
+          name
+          symbol
+          decimals
+          address
+        }
+        value
       }
-      value
-    }
-    recipient
+      recipient
     }
     ... on ProfileFollowModuleSettings {
       type
@@ -161,4 +152,5 @@ fragment ProfileFields on Profile {
       followModuleReturnData
     }
   }
-}`
+}
+`

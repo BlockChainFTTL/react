@@ -14,7 +14,6 @@ const Home: React.FC = () => {
             query: exploreProfiles
       })
       setProfiles(FollowedProfiles.data.exploreProfiles.items)
-      console.log(FollowedProfiles.data.exploreProfiles.items)
     }
 
     return(

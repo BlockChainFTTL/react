@@ -1,8 +1,10 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { client } from '../../api/api';
 import ExploreContainer from '../../components/ExploreContainer';
 import './Profil.css';
 
 const Profil: React.FC = () => {
+  
   return (
     <IonPage>
       <IonHeader>
