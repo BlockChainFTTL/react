@@ -44,7 +44,7 @@ const Home: React.FC = () => {
                 <IonButtons slot="start">
                     <IonMenuButton></IonMenuButton>
                 </IonButtons>
-                <IonTitle>Instagram</IonTitle>
+                <IonTitle>InstaLens</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">

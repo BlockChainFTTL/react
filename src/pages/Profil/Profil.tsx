@@ -1,10 +1,27 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { client } from '../../api/api';
-import ExploreContainer from '../../components/ExploreContainer';
-import './Profil.css';
+import React, { useState } from 'react';
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonAvatar,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonBadge,
+  IonRow,
+  IonCol
+} from '@ionic/react';
 
 const Profil: React.FC = () => {
-  
+  const [followers,setFollowers] = useState(1000);
+  const [suivies,setSuivies] = useState(500);
+  const [publications,setPublications] = useState([]);
   return (
     <IonPage>
       <IonHeader>
@@ -12,13 +29,44 @@ const Profil: React.FC = () => {
           <IonTitle>Profil</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Profil</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer name="Tab 3 page" />
+      <IonContent>
+        <IonCard>
+          <IonCardHeader>
+            <IonRow>
+              <IonCol>
+                <IonAvatar slot="start">
+                  <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                </IonAvatar>
+              </IonCol>
+              <IonCol>
+                <IonCardTitle>Nom d'utilisateur</IonCardTitle>
+              </IonCol>
+            </IonRow>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonList>
+              <IonItem>
+                <IonLabel>Followers</IonLabel>
+                <IonBadge slot="end">{followers}</IonBadge>
+              </IonItem>
+              <IonItem>
+                <IonLabel>Suivi(e)s</IonLabel>
+                <IonBadge slot="end">{suivies}</IonBadge>
+              </IonItem>
+              <IonItem>
+                <IonLabel>Publications</IonLabel>
+                <IonBadge slot="end">{publications.length}</IonBadge>
+              </IonItem>
+            </IonList>
+          </IonCardContent>
+        </IonCard>
+        {publications.length > 0 && 
+        <IonList>
+          {publications.map((publication:any) =>(
+            <IonItem key={publication.id} />
+          ))}
+        </IonList>
+        }
       </IonContent>
     </IonPage>
   );

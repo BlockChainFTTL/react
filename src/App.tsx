@@ -54,9 +54,8 @@ const App: React.FC = () => (
           <Route exact path="/home">
             <Home />
           </Route>
-          <Route exact path="/publication">
-            <Publication />
-          </Route>
+          {/* <Route exact path="/publication" component={Publication} id="someValue">
+          </Route> */}
         </IonRouterOutlet>
         <IonTabBar slot="bottom" >
           {/* <IonTabButton tab="login" href="/login">

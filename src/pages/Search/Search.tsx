@@ -29,6 +29,7 @@ const Search: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
+                {profiles.length > 0 &&
                 <IonList title="Profiles">
                     {profiles.length > 0 && <h2>Profiles</h2>}
                     {profiles.map((profile:any) =>(
@@ -36,10 +37,10 @@ const Search: React.FC = () => {
                             <IonLabel>
                                 {/* {profile.picture.original !== undefined && profile.picture.original.url !== null && <IonImg src={profile.picture.original.url}></IonImg>}
                                 {profile.picture.uri !== undefined && profile.picture.uri !== null && <IonImg src={profile.picture.uri}></IonImg>} */}
-                                {profile.name}    {profile.stats.totalFollowers} followers</IonLabel>
+                                {profile.id}    {profile.stats.totalFollowers} followers</IonLabel>
                         </IonItem>
                     ))}
-                </IonList>
+                </IonList>}
                 <IonList title="Publications">
                     {publications.length > 0 && <h2>Publications</h2>}
                     {publications.map((publication:any) =>(
