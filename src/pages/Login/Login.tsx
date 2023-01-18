@@ -1,4 +1,4 @@
-import { IonButtons, IonContent, IonGrid, IonHeader, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonTabButton, IonTitle, IonToolbar, IonRouterLink, IonLabel, IonItem } from '@ionic/react';
+import { IonButtons, IonContent, IonGrid, IonHeader, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonTabButton, IonTitle, IonToolbar, IonRouterLink, IonLabel, IonItem, IonButton } from '@ionic/react';
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { Route } from 'react-router';
@@ -49,6 +49,7 @@ const Login: React.FC = () => {
       /* if user authentication is successful, you will receive an accessToken and refreshToken */
       const { data: { authenticate: { accessToken }}} = authData
       console.log({ accessToken })
+      console.log('address = ', address)
       setToken(accessToken)
     } catch (err) {
       console.log('Error signing in: ', err)
@@ -64,16 +65,22 @@ const Login: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent class="center">
-          <IonRouterOutlet>
-            <Route path="/app" component={App} exact={true} />
-          </IonRouterOutlet>
-          <IonGrid fixed={true}>
-            <IonRow>
-              { !address && <IonTabButton onClick={connect}>Se connecter au Wallet</IonTabButton> }
-              { address && !token && <IonTabButton onClick={login}>Se connecter</IonTabButton> }
-              { address && token && <IonLabel>token : "Token"</IonLabel> }
-            </IonRow>
-          </IonGrid>
+        { /* if the user has not yet connected their wallet, show a connect button */ }
+          {
+            !address && <IonButton onClick={connect}>Connect</IonButton>
+          }
+          { /* if the user has connected their wallet but has not yet authenticated, show them a login button */ }
+          {
+            address && !token && (
+              <div onClick={login}>
+                <IonButton>Login</IonButton>
+              </div>
+            )
+          }
+          { /* once the user has authenticated, show them a success message */ }
+          {
+            address && token && <h2>Successfully signed in!<br></br>address = {address}</h2>
+          }
         </IonContent>
       </IonPage>
     </>

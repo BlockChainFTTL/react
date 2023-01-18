@@ -15,7 +15,6 @@ export const challenge = gql`
   }
 `
 
-
 export const authenticate = gql`
   mutation Authenticate(
     $address: EthereumAddress!

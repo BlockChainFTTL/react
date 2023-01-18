@@ -1,27 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { IonContent, IonPage, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent } from '@ionic/react';
+import { IonContent, IonPage, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonHeader, IonBackButton, IonButtons, IonTitle, IonToolbar } from '@ionic/react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
+import { client } from '../../api/api';
+import { getPublicationById } from '../../api/publication/queries';
 
-const PublicationPage = (props: { match: { params: { id: any; }; }; }) => {
-  const [publication, setPublication] = useState({});
-  const publicationId = props.match.params.id;
+const Publication:React.FC = () => {
+  const {id} = useParams<{id: string}>();
+  const [publication, setPublication] = useState<any>();
 
   useEffect(() => {
-    fetch(`https://api.example.com/publications/${publicationId}`)
-      .then(response => response.json())
-      .then(data => setPublication(data));
-  }, []);
+    getPublication();
+  });
 
-  const publication
+  async function getPublication(){
+    const PublicationInfo = await client.query({
+      query: getPublicationById,
+      variables: {id}
+    })
+    setPublication(PublicationInfo.data.publication)
+  }
 
   return (
     <IonPage>
+      <IonHeader>
+      <IonToolbar>
+        <IonButtons slot="start">
+          <IonBackButton></IonBackButton>
+        </IonButtons>
+        <IonTitle>Publication {id}</IonTitle>
+      </IonToolbar>
+      </IonHeader>
       <IonContent>
         <IonCard>
           <IonCardHeader>
-            <IonCardTitle>{publication.metadata.name}</IonCardTitle>
+            <IonCardTitle>{publication.id}</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            {publication.metadata.content}
           </IonCardContent>
         </IonCard>
       </IonContent>
@@ -29,4 +43,4 @@ const PublicationPage = (props: { match: { params: { id: any; }; }; }) => {
   );
 };
 
-export default PublicationPage;
+export default Publication;
