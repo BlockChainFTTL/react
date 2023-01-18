@@ -33,7 +33,7 @@ const Publication:React.FC = () => {
       <IonContent>
         <IonCard>
           <IonCardHeader>
-            <IonCardTitle>{publication.id}</IonCardTitle>
+            <IonCardTitle>{id}</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
           </IonCardContent>

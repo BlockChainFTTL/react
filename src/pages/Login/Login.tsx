@@ -14,6 +14,7 @@ const Login: React.FC = () => {
     /* when the app loads, check to see if the user has already connected their wallet */
     checkConnection()
   }, [])
+
   async function checkConnection() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const accounts = await provider.listAccounts()
@@ -21,6 +22,7 @@ const Login: React.FC = () => {
       setAddress(accounts[0])
     }
   }
+
   async function connect() {
     /* this allows the user to connect their wallet */
     const account = await window.ethereum.send('eth_requestAccounts')
@@ -28,6 +30,7 @@ const Login: React.FC = () => {
       setAddress(account.result[0])
     }
   }
+  
   async function login() {
     try {
       /* first request the challenge from the API server */
@@ -55,6 +58,10 @@ const Login: React.FC = () => {
       console.log('Error signing in: ', err)
     }
   }
+
+  async function createProfil () {
+    console.log('createProfil')
+  }
   
   return (
     <>
@@ -79,7 +86,13 @@ const Login: React.FC = () => {
           }
           { /* once the user has authenticated, show them a success message */ }
           {
-            address && token && <h2>Successfully signed in!<br></br>address = {address}</h2>
+            address && token && (
+            <>
+              <IonLabel>Connexion réussie !</IonLabel>
+              <br />
+              <IonButton onClick={createProfil}>Créer un profil</IonButton>
+            </>
+            )
           }
         </IonContent>
       </IonPage>
