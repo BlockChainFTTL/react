@@ -72,7 +72,6 @@ const Login: React.FC = () => {
               { !address && <IonTabButton onClick={connect}>Se connecter au Wallet</IonTabButton> }
               { address && !token && <IonTabButton onClick={login}>Se connecter</IonTabButton> }
               { address && token && <IonLabel>token : "Token"</IonLabel> }
-
             </IonRow>
           </IonGrid>
         </IonContent>

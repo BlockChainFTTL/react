@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonImg } from "@ionic/react";
+import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonImg as IonAvatar, IonButton, IonIcon, IonChip, IonItemSliding } from "@ionic/react";
 import "./Home.css";
 import { client, exploreProfiles } from "../../api/api";
+import { addCircleOutline } from "ionicons/icons";
 
 const Home: React.FC = () => {
     const[profiles,setProfiles] = useState([])
@@ -10,9 +11,30 @@ const Home: React.FC = () => {
       }, [])
 
     async function getFollowedProfiles() {
-        const FollowedProfiles = await client.query({
+        var FollowedProfiles = await client.query({
             query: exploreProfiles
-      })
+        })
+
+        var items = []
+        for(let i = 0; i < FollowedProfiles.data.exploreProfiles.items.length; i++){
+            var item = FollowedProfiles.data.exploreProfiles.items[i];
+            if(item.picture !== null && item.picture !== undefined){
+                if(item.picture.uri !== null && item.picture.uri !== undefined){
+                    item.picture = item.picture.uri
+                }
+                else if(item.picture.original !== null && item.picture.original !== undefined){
+                    item.picture = item.picture.original.url
+                }
+
+                if(item.picture !== null && item.picture.startsWith('ipfs://')){
+                    let result = item.picture.substring(7, item.picture.length)
+                    item.picture = 'https://ipfs.io/ipfs/' + result
+                }
+            }
+
+            console.log(item.picture)
+        }
+
       setProfiles(FollowedProfiles.data.exploreProfiles.items)
 
     //   profiles.map((profile:any) =>(
@@ -46,12 +68,16 @@ const Home: React.FC = () => {
                 </IonButtons>
                 <IonTitle>InstaLens</IonTitle>
                 </IonToolbar>
+                <IonButtons slot="end">
+                    <IonIcon icon={addCircleOutline}></IonIcon>
+                </IonButtons>
             </IonHeader>
             <IonContent className="ion-padding">
                 <IonList>
                     {profiles.map((profile:any) =>(
                         <IonItem key={profile.id}>
-                            <IonLabel><IonImg src={profile.picture.original.url}></IonImg>{profile.name}    {profile.stats.totalFollowers} followers</IonLabel>
+                                <IonAvatar><img src={profile.picture} /></IonAvatar>
+                                <IonLabel>{profile.name}</IonLabel>
                         </IonItem>
                     ))}
                 </IonList>

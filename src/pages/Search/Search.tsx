@@ -1,5 +1,7 @@
-import {IonContent, IonHeader, IonImg, IonItem, IonLabel, IonList, IonPage, IonSearchbar, IonToolbar} from '@ionic/react';
+import {IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonSearchbar, IonToolbar} from '@ionic/react';
 import React, {useState} from 'react';
+import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 import {client, searchProfiles, searchPublications} from '../../api/api';
 
 const Search: React.FC = () => {
@@ -19,7 +21,7 @@ const Search: React.FC = () => {
         })
         setPublications(matchingPublications.data.search.items)
     }
-
+    
 	return(
         <>
         <IonPage>
@@ -33,22 +35,27 @@ const Search: React.FC = () => {
                 <IonList title="Profiles">
                     {profiles.length > 0 && <h2>Profiles</h2>}
                     {profiles.map((profile:any) =>(
-                        <IonItem key={profile.id} href={"/login"} detail={false}>
+                        <IonItem key={profile.profileId} href={"/OtherProfil/"+profile.profileId} detail={false}>
+                            {/* <IonAvatar>
+                                {profile.picture.original !== undefined && profile.picture.original.url !== null && <img src={profile.picture.original.url}/>}
+                                {profile.picture.uri !== undefined && profile.picture.uri !== null && <img src={profile.picture.uri}/>}
+                            </IonAvatar> */}
                             <IonLabel>
-                                {/* {profile.picture.original !== undefined && profile.picture.original.url !== null && <IonImg src={profile.picture.original.url}></IonImg>}
-                                {profile.picture.uri !== undefined && profile.picture.uri !== null && <IonImg src={profile.picture.uri}></IonImg>} */}
-                                {profile.id}    {profile.stats.totalFollowers} followers</IonLabel>
+                                {profile.name}
+                            </IonLabel>
                         </IonItem>
                     ))}
                 </IonList>}
                 <IonList title="Publications">
                     {publications.length > 0 && <h2>Publications</h2>}
                     {publications.map((publication:any) =>(
-                        <IonItem key={publication.id}>
+                        <Link to={"/Publication/"+publication.id}>
+                        <IonItem>
                             <IonLabel>
-                                {publication.title}
+                                {publication.id}
                             </IonLabel>
                         </IonItem>
+                        </Link>
                     ))}
                 </IonList>
             </IonContent>

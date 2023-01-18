@@ -17,8 +17,13 @@ import {
   IonRow,
   IonCol
 } from '@ionic/react';
+import "./Profil.css"
 
-const Profil: React.FC = () => {
+interface ProfilProps {
+  id: string
+}
+
+const Profil: React.FC<ProfilProps> = ({id}) => {
   const [followers,setFollowers] = useState(1000);
   const [suivies,setSuivies] = useState(500);
   const [publications,setPublications] = useState([]);
@@ -26,7 +31,7 @@ const Profil: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Profil</IonTitle>
+          <IonTitle>Profil {id}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -34,14 +39,15 @@ const Profil: React.FC = () => {
           <IonCardHeader>
             <IonRow>
               <IonCol>
-                <IonAvatar slot="start">
-                  <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                <IonAvatar>
+                  <img alt="Silhouette of a person's head" src="https://cdn.shopify.com/s/files/1/0287/6738/7780/products/PORTRAIT-OLLOW-BLEU.png?v=1597638270" />
                 </IonAvatar>
               </IonCol>
               <IonCol>
                 <IonCardTitle>Nom d'utilisateur</IonCardTitle>
               </IonCol>
             </IonRow>
+            <IonLabel>Biographie</IonLabel>
           </IonCardHeader>
           <IonCardContent>
             <IonList>

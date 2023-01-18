@@ -14,7 +14,6 @@ import Login from './pages/Login/Login';
 import Search from './pages/Search/Search';
 import Profil from './pages/Profil/Profil';
 import Home from './pages/Home/Home';
-import Publication from './pages/Publication/Publication';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,6 +33,8 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import OtherProfil from './pages/Other profil/OtherProfil';
+import Publication from './pages/Publication/Publication';
 
 setupIonicReact();
 
@@ -48,19 +49,23 @@ const App: React.FC = () => (
           <Route exact path="/search">
             <Search />
           </Route>
-          <Route exact path="/profil/:profilID">
-            <Profil />
+          <Route exact path="/profil">
+            <Profil id={''} />
           </Route>
           <Route exact path="/home">
             <Home />
           </Route>
-          {/* <Route exact path="/publication" component={Publication} id="someValue">
-          </Route> */}
+          <Route exact path="/publication/:id">
+            <Publication />
+          </Route>
+          <Route exact path="/OtherProfil/:id">
+            <OtherProfil />
+          </Route>
         </IonRouterOutlet>
-        <IonTabBar slot="bottom" >
-          {/* <IonTabButton tab="login" href="/login">
+        <IonTabBar slot="bottom">
+          <IonTabButton tab="login" href="/login">
             <IonIcon icon={logIn} />
-          </IonTabButton> */}
+          </IonTabButton>
           <IonTabButton tab="home" href="/home">
             <IonIcon icon={home} />
           </IonTabButton>

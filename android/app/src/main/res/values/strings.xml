@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">influenceur</string>
-    <string name="title_activity_main">influenceur</string>
+    <string name="app_name">instalens</string>
+    <string name="title_activity_main">instalens</string>
     <string name="package_name">ionic.influenceur</string>
     <string name="custom_url_scheme">ionic.influenceur</string>
 </resources>

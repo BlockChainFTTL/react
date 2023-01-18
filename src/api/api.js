@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client'
 
-const API_URL = 'https://api.lens.dev'
+const API_URL = 'https://api-mumbai.lens.dev/'
 
 export const client = new ApolloClient({
   uri: API_URL,
@@ -32,24 +32,96 @@ export const authenticate = gql`
 `
 
 export const exploreProfiles = gql`
-  query ExploreProfiles {
-    exploreProfiles(request: { sortCriteria: MOST_FOLLOWERS }) {
-      items {
-        id
-        name
-        picture {
-          ... on MediaSet {
-            original {
-              url
-            }
+query ExploreProfiles {
+  exploreProfiles(request: { sortCriteria: MOST_FOLLOWERS }) {
+    items {
+      id
+      name
+      bio
+      isDefault
+      attributes {
+        displayType
+        traitType
+        key
+        value
+      }
+      followNftAddress
+      metadata
+      handle
+      picture {
+        ... on NftImage {
+          contractAddress
+          tokenId
+          uri
+          chainId
+          verified
+        }
+        ... on MediaSet {
+          original {
+            url
+            mimeType
           }
         }
-        stats {
-          totalFollowers
+      }
+      coverPicture {
+        ... on NftImage {
+          contractAddress
+          tokenId
+          uri
+          chainId
+          verified
+        }
+        ... on MediaSet {
+          original {
+            url
+            mimeType
+          }
+        }
+      }
+      ownedBy
+      dispatcher {
+        address
+        canUseRelay
+      }
+      stats {
+        totalFollowers
+        totalFollowing
+        totalPosts
+        totalComments
+        totalMirrors
+        totalPublications
+        totalCollects
+      }
+      followModule {
+        ... on FeeFollowModuleSettings {
+          type
+          contractAddress
+          amount {
+            asset {
+              name
+              symbol
+              decimals
+              address
+            }
+            value
+          }
+          recipient
+        }
+        ... on ProfileFollowModuleSettings {
+        type
+        }
+        ... on RevertFollowModuleSettings {
+        type
         }
       }
     }
+    pageInfo {
+      prev
+      next
+      totalCount
+    }
   }
+}
 `
 
 export const searchProfiles = gql`

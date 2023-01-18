@@ -1,4 +1,4 @@
-package ionic.influenceur;
+package ionic.instalens;
 
 import com.getcapacitor.BridgeActivity;
 
