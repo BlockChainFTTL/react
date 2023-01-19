@@ -1,18 +1,27 @@
-import { IonButtons, IonContent, IonGrid, IonHeader, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonTabButton, IonTitle, IonToolbar, IonRouterLink, IonLabel, IonItem, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonLabel, IonButton } from '@ionic/react';
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
-import { Route } from 'react-router';
 import { client, challenge, authenticate } from '../../api/api'
-import App from '../../App';
+import { createProfile } from '../../api/profil/mutations';
 import './Login.css';
-
+import { useHistory } from 'react-router-dom';
+import { hideTabs, showTabs } from '../../App';
 
 const Login: React.FC = () => {
   const [address, setAddress] = useState('')
   const [token, setToken] = useState()
+  const history = useHistory();
+
   useEffect(() => {
+    hideTabs()
+    localStorage.clear()
     /* when the app loads, check to see if the user has already connected their wallet */
     checkConnection()
+
+    return() => {
+      showTabs()
+    }
+    
   }, [])
 
   async function checkConnection() {
@@ -51,16 +60,27 @@ const Login: React.FC = () => {
       })
       /* if user authentication is successful, you will receive an accessToken and refreshToken */
       const { data: { authenticate: { accessToken }}} = authData
+      const { data: { authenticate: { refreshToken }}} = authData
       console.log({ accessToken })
+      console.log({ refreshToken })
+      localStorage.setItem('accessToken', accessToken)
+      localStorage.setItem('refreshToken', accessToken)
+      localStorage.setItem('addressEthereum', address)
       console.log('address = ', address)
       setToken(accessToken)
+
+      history.replace('/home')
     } catch (err) {
       console.log('Error signing in: ', err)
     }
   }
 
   async function createProfil () {
-    console.log('createProfil')
+    console.log('createProfil : started')
+    const ProfileCreated = await client.mutate({
+      mutation: createProfile
+    })
+    console.log(ProfileCreated)
   }
   
   return (

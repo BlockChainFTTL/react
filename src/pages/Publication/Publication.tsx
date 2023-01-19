@@ -3,13 +3,19 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { client } from '../../api/api';
 import { getPublicationById } from '../../api/publication/queries';
+import { hideTabs, showTabs } from '../../App';
 
 const Publication:React.FC = () => {
   const {id} = useParams<{id: string}>();
   const [publication, setPublication] = useState<any>();
 
   useEffect(() => {
+    hideTabs();
     getPublication();
+
+    return() => {
+      showTabs();
+    }
   });
 
   async function getPublication(){
@@ -33,7 +39,7 @@ const Publication:React.FC = () => {
       <IonContent>
         <IonCard>
           <IonCardHeader>
-            <IonCardTitle>{id}</IonCardTitle>
+            <IonCardTitle>{publication.metadata.content}</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
           </IonCardContent>

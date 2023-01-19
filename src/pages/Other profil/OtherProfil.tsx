@@ -5,6 +5,7 @@ import { client } from "../../api/api";
 import "./OtherProfil.css";
 import { getProfilById } from "../../api/profil/queries";
 import { getPublicationsByProfileId } from "../../api/publication/queries";
+import { hideTabs, showTabs } from "../../App";
   
 const OtherProfil: React.FC = () => {
     const {id} = useParams<{id: string}>();
@@ -17,8 +18,13 @@ const OtherProfil: React.FC = () => {
     const [avatar,setAvatar] = useState("");
 
     useEffect(() => {
+        hideTabs();
         getProfilInfo();
         getPublications();
+
+        return() => {
+            showTabs();
+        }
     });
 
     async function getProfilInfo(){
@@ -87,7 +93,7 @@ const OtherProfil: React.FC = () => {
                 </IonItem>
                 <IonItem>
                   <IonLabel>Publications</IonLabel>
-                  <IonBadge slot="end">{publications.length}</IonBadge>
+                  <IonBadge slot="end">{posts}</IonBadge>
                 </IonItem>
               </IonList>
             </IonCardContent>

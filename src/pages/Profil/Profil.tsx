@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonPage,
   IonHeader,
@@ -15,23 +15,81 @@ import {
   IonLabel,
   IonBadge,
   IonRow,
-  IonCol
+  IonCol,
+  IonMenu,
+  IonButtons,
+  IonMenuButton
 } from '@ionic/react';
 import "./Profil.css"
+import { client } from '../../api/api';
+import { queryDefaultProfile } from '../../api/profil/queries';
 
-interface ProfilProps {
-  id: string
-}
 
-const Profil: React.FC<ProfilProps> = ({id}) => {
-  const [followers,setFollowers] = useState(1000);
-  const [suivies,setSuivies] = useState(500);
+const Profil: React.FC = () => {
+  const [id,setId] = useState('')
+  const [nombreFollowers,setNombreFollowers] = useState(10);
+  const [nombreSuivies,setNombreSuivies] = useState(50);
+  const [nombrePosts,setNombrePosts] = useState(3);
   const [publications,setPublications] = useState([]);
+  const [nom,setNom] = useState("");
+  const [biographie,setBiographie] = useState("");
+  const [avatar,setAvatar] = useState("");
+
+  useEffect(() => {
+    getDefaultProfile();
+    
+    console.log("yo")
+  })
+
+  async function getDefaultProfile(){
+    const addressEthereum = localStorage.getItem("addressEthereum");
+    const defaultProfile = await client.query({
+      query: queryDefaultProfile,
+      variables: {addressEthereum}
+    })
+    setId(defaultProfile.data.defaultProfile.id)
+    setNom(defaultProfile.data.defaultProfile.name)
+    setNombreFollowers(defaultProfile.data.stats.totalFollowers)
+    setNombreSuivies(defaultProfile.data.stats.totalFollowing)
+    setNombrePosts(defaultProfile.data.stats.totalPosts)
+    setBiographie(defaultProfile.data.bio)
+    if(defaultProfile.data.profile.picture !== null && defaultProfile.data.profile.picture !== undefined){
+      if(defaultProfile.data.defaultProfile.picture.uri === undefined){
+          setAvatar(defaultProfile.data.profile.picture.original.url)
+      }
+      else{
+          setAvatar(defaultProfile.data.picture.uri)
+      }
+
+      if(avatar.startsWith("ipfs://")){
+        setAvatar("https://ipfs.io/ipfs/"+avatar.substring(7))
+      }
+    }
+  }
+    
+
   return (
+    <>
+    <IonMenu contentId="main-content">
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Menu</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <IonList>
+          <IonItem routerLink="/addProfil">Ajouter un profil</IonItem>
+          <IonItem routerLink="/profil">Changer le profil par défaut</IonItem>
+        </IonList>
+      </IonContent>
+    </IonMenu>
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Profil {id}</IonTitle>
+          <IonButtons slot="start">
+            <IonMenuButton></IonMenuButton>
+          </IonButtons>
+          <IonTitle>Profil</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -40,7 +98,7 @@ const Profil: React.FC<ProfilProps> = ({id}) => {
             <IonRow>
               <IonCol>
                 <IonAvatar>
-                  <img alt="Silhouette of a person's head" src="https://cdn.shopify.com/s/files/1/0287/6738/7780/products/PORTRAIT-OLLOW-BLEU.png?v=1597638270" />
+                  <img src={avatar} />
                 </IonAvatar>
               </IonCol>
               <IonCol>
@@ -53,15 +111,15 @@ const Profil: React.FC<ProfilProps> = ({id}) => {
             <IonList>
               <IonItem>
                 <IonLabel>Followers</IonLabel>
-                <IonBadge slot="end">{followers}</IonBadge>
+                <IonBadge slot="end">{nombreFollowers}</IonBadge>
               </IonItem>
               <IonItem>
                 <IonLabel>Suivi(e)s</IonLabel>
-                <IonBadge slot="end">{suivies}</IonBadge>
+                <IonBadge slot="end">{nombreSuivies}</IonBadge>
               </IonItem>
               <IonItem>
                 <IonLabel>Publications</IonLabel>
-                <IonBadge slot="end">{publications.length}</IonBadge>
+                <IonBadge slot="end">{nombrePosts}</IonBadge>
               </IonItem>
             </IonList>
           </IonCardContent>
@@ -75,6 +133,7 @@ const Profil: React.FC<ProfilProps> = ({id}) => {
         }
       </IonContent>
     </IonPage>
+    </>
   );
 };
 
