@@ -74,14 +74,6 @@ const Login: React.FC = () => {
       console.log('Error signing in: ', err)
     }
   }
-
-  async function createProfil () {
-    console.log('createProfil : started')
-    const ProfileCreated = await client.mutate({
-      mutation: createProfile
-    })
-    console.log(ProfileCreated)
-  }
   
   return (
     <>
@@ -102,16 +94,6 @@ const Login: React.FC = () => {
               <div onClick={login}>
                 <IonButton>Login</IonButton>
               </div>
-            )
-          }
-          { /* once the user has authenticated, show them a success message */ }
-          {
-            address && token && (
-            <>
-              <IonLabel>Connexion réussie !</IonLabel>
-              <br />
-              <IonButton onClick={createProfil}>Créer un profil</IonButton>
-            </>
             )
           }
         </IonContent>

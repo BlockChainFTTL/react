@@ -1,4 +1,4 @@
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonRow, IonCol, IonAvatar, IonCardTitle, IonLabel, IonCardContent, IonList, IonItem, IonBadge, IonBackButton, IonButtons } from "@ionic/react";
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonRow, IonCol, IonAvatar, IonCardTitle, IonLabel, IonCardContent, IonList, IonItem, IonBadge, IonBackButton, IonButtons, IonButton } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { client } from "../../api/api";
@@ -6,6 +6,7 @@ import "./OtherProfil.css";
 import { getProfilById } from "../../api/profil/queries";
 import { getPublicationsByProfileId } from "../../api/publication/queries";
 import { hideTabs, showTabs } from "../../App";
+import { mutationFollowProfile } from "../../api/follow/mutation";
   
 const OtherProfil: React.FC = () => {
     const {id} = useParams<{id: string}>();
@@ -16,6 +17,7 @@ const OtherProfil: React.FC = () => {
     const [nom,setNom] = useState("");
     const [biographie,setBiographie] = useState("");
     const [avatar,setAvatar] = useState("");
+    const [isFollowedByMe, setIsFollowedByMe] = useState(false);
 
     useEffect(() => {
         hideTabs();
@@ -56,6 +58,16 @@ const OtherProfil: React.FC = () => {
       setPublications(publications.data.publications.items)
     }
 
+    async function followProfile(){
+      const follow = await client.mutate({
+        mutation: mutationFollowProfile,
+        variables: {id}
+      })
+      console.log(follow)
+      setIsFollowedByMe(!isFollowedByMe)
+
+    }
+
     return (
       <IonPage>
         <IonHeader>
@@ -76,7 +88,7 @@ const OtherProfil: React.FC = () => {
                   </IonAvatar>
                 </IonCol>
                 <IonCol>
-                  <IonCardTitle>{nom}</IonCardTitle>
+                  <h5>{nom}</h5>
                 </IonCol>
               </IonRow>
               <IonLabel>{biographie}</IonLabel>
@@ -96,6 +108,9 @@ const OtherProfil: React.FC = () => {
                   <IonBadge slot="end">{posts}</IonBadge>
                 </IonItem>
               </IonList>
+              <br />
+              {isFollowedByMe === true && <IonButton onClick={followProfile}>Unfollow</IonButton>}
+              {isFollowedByMe === false && <IonButton onClick={followProfile}>Follow</IonButton>}
             </IonCardContent>
           </IonCard>
           {publications.length > 0 && 

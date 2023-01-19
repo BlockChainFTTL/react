@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonHeader, IonBackButton, IonButtons, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonPage, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonHeader, IonBackButton, IonButtons, IonTitle, IonToolbar, IonCardSubtitle, IonText } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { client } from '../../api/api';
@@ -7,7 +7,10 @@ import { hideTabs, showTabs } from '../../App';
 
 const Publication:React.FC = () => {
   const {id} = useParams<{id: string}>();
-  const [publication, setPublication] = useState<any>();
+  const [title,setTitle] = useState("");
+  const [creator,setCreator] = useState("");
+  const [content,setContent] = useState("");
+  const [profileId,setProfileId] = useState("");
 
   useEffect(() => {
     hideTabs();
@@ -23,8 +26,19 @@ const Publication:React.FC = () => {
       query: getPublicationById,
       variables: {id}
     })
-    setPublication(PublicationInfo.data.publication)
+    setTitle(PublicationInfo.data.publication.metadata.name)
+    setCreator(PublicationInfo.data.publication.profile.handle)
+    setContent(PublicationInfo.data.publication.metadata.content)
+    setProfileId(PublicationInfo.data.publication.profile.id)
   }
+
+  // async function getComments(){
+  //   const comments = await client.query({
+  //     query: getComments,
+  //     variables: {profileId, id}
+  //   })
+  //   setComments(comments.data.comments.items)
+  // }
 
   return (
     <IonPage>
@@ -37,14 +51,18 @@ const Publication:React.FC = () => {
       </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>{publication.metadata.content}</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-          </IonCardContent>
-        </IonCard>
-      </IonContent>
+      <IonCard>
+        <IonCardHeader>
+          <IonCardSubtitle>
+            {creator}
+          </IonCardSubtitle>
+            <h3>{title}</h3>
+        </IonCardHeader><IonCardContent>
+          <IonText>{content}</IonText>
+        </IonCardContent>
+        
+      </IonCard>
+    </IonContent>
     </IonPage>
   );
 };

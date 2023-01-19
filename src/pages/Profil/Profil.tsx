@@ -53,6 +53,7 @@ const Profil: React.FC = () => {
     setNombreSuivies(defaultProfile.data.stats.totalFollowing)
     setNombrePosts(defaultProfile.data.stats.totalPosts)
     setBiographie(defaultProfile.data.bio)
+    
     if(defaultProfile.data.profile.picture !== null && defaultProfile.data.profile.picture !== undefined){
       if(defaultProfile.data.defaultProfile.picture.uri === undefined){
           setAvatar(defaultProfile.data.profile.picture.original.url)

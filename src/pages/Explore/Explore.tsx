@@ -23,7 +23,7 @@ const Explore:React.FC = () => {
             <IonContent>
                 <IonList>
                     {publications.map((publication:any) => (
-                        <IonItem key={publication.id}>
+                        <IonItem routerLink={"/publication/"+publication.id}>
                             <IonCard>
                                 <IonCardHeader>
                                     <IonCardSubtitle>
