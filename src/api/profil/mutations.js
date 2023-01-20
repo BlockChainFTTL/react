@@ -2,17 +2,13 @@ import {gql} from '@apollo/client'
 
 export const createProfile = gql`
     mutation CreateProfile(
-    $handle: CreateHandle! = "luigi_esgi"
-    $profilePictureUri: Url = null
-    $followModule: FollowModuleParams = null
-    $followNFTURI: Url = null
-    ) {
+    $handle: CreateHandle!) {
     createProfile(
         request: {
         handle: $handle
-        profilePictureUri: $profilePictureUri
-        followNFTURI: $followNFTURI
-        followModule: $followModule
+        profilePictureUri: null
+        followNFTURI: null
+        followModule: null
         }
     ) {
         ... on RelayerResult {

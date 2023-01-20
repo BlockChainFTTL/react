@@ -37,34 +37,38 @@ const Profil: React.FC = () => {
 
   useEffect(() => {
     getDefaultProfile();
-    
-    console.log("yo")
   })
 
   async function getDefaultProfile(){
-    const addressEthereum = localStorage.getItem("addressEthereum");
-    const defaultProfile = await client.query({
-      query: queryDefaultProfile,
-      variables: {addressEthereum}
-    })
-    setId(defaultProfile.data.defaultProfile.id)
-    setNom(defaultProfile.data.defaultProfile.name)
-    setNombreFollowers(defaultProfile.data.stats.totalFollowers)
-    setNombreSuivies(defaultProfile.data.stats.totalFollowing)
-    setNombrePosts(defaultProfile.data.stats.totalPosts)
-    setBiographie(defaultProfile.data.bio)
-    
-    if(defaultProfile.data.profile.picture !== null && defaultProfile.data.profile.picture !== undefined){
-      if(defaultProfile.data.defaultProfile.picture.uri === undefined){
-          setAvatar(defaultProfile.data.profile.picture.original.url)
-      }
-      else{
-          setAvatar(defaultProfile.data.picture.uri)
-      }
+    try{
+      const addressEthereum = localStorage.getItem("addressEthereum");
+      const defaultProfile = await client.query({
+        query: queryDefaultProfile,
+        variables: {addressEthereum}
+      })
+      setId(defaultProfile.data.defaultProfile.id)
+      setNom(defaultProfile.data.defaultProfile.handle)
+      console.log("nom : ",nom)
+      setNombreFollowers(defaultProfile.data.defaultProfile.stats.totalFollowers)
+      setNombreSuivies(defaultProfile.data.defaultProfile.stats.totalFollowing)
+      setNombrePosts(defaultProfile.data.defaultProfile.stats.totalPosts)
+      setBiographie(defaultProfile.data.defaultProfile.bio)
+      
+      if(defaultProfile.data.profile.picture !== null && defaultProfile.data.profile.picture !== undefined){
+        if(defaultProfile.data.defaultProfile.picture.uri === undefined){
+            setAvatar(defaultProfile.data.profile.picture.original.url)
+        }
+        else{
+            setAvatar(defaultProfile.data.picture.uri)
+        }
 
-      if(avatar.startsWith("ipfs://")){
-        setAvatar("https://ipfs.io/ipfs/"+avatar.substring(7))
+        if(avatar.startsWith("ipfs://")){
+          setAvatar("https://ipfs.io/ipfs/"+avatar.substring(7))
+        }
       }
+    }
+    catch(error){
+      console.log("erreur : ",error)
     }
   }
     
@@ -81,6 +85,7 @@ const Profil: React.FC = () => {
         <IonList>
           <IonItem routerLink="/addProfil">Ajouter un profil</IonItem>
           <IonItem routerLink="/profil">Changer le profil par défaut</IonItem>
+          <IonItem href="/login">Se déconnecter</IonItem>
         </IonList>
       </IonContent>
     </IonMenu>
@@ -90,7 +95,7 @@ const Profil: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-          <IonTitle>Profil</IonTitle>
+          <IonTitle>Profil {id}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -103,10 +108,10 @@ const Profil: React.FC = () => {
                 </IonAvatar>
               </IonCol>
               <IonCol>
-                <IonCardTitle>Nom d'utilisateur</IonCardTitle>
+                <IonCardTitle>{nom}</IonCardTitle>
               </IonCol>
             </IonRow>
-            <IonLabel>Biographie</IonLabel>
+            <IonLabel>{biographie}</IonLabel>
           </IonCardHeader>
           <IonCardContent>
             <IonList>

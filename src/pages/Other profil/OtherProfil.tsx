@@ -59,12 +59,17 @@ const OtherProfil: React.FC = () => {
     }
 
     async function followProfile(){
-      const follow = await client.mutate({
-        mutation: mutationFollowProfile,
-        variables: {id}
-      })
-      console.log(follow)
-      setIsFollowedByMe(!isFollowedByMe)
+      try{
+        const follow = await client.mutate({
+          mutation: mutationFollowProfile,
+          variables: {id}
+        })
+        console.log(follow)
+        setIsFollowedByMe(!isFollowedByMe)
+      }
+      catch(err){
+        console.log("erreur : ",err)
+      }
 
     }
 

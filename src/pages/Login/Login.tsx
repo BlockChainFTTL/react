@@ -14,7 +14,6 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     hideTabs()
-    localStorage.clear()
     /* when the app loads, check to see if the user has already connected their wallet */
     checkConnection()
 
@@ -66,7 +65,6 @@ const Login: React.FC = () => {
       localStorage.setItem('accessToken', accessToken)
       localStorage.setItem('refreshToken', accessToken)
       localStorage.setItem('addressEthereum', address)
-      console.log('address = ', address)
       setToken(accessToken)
 
       history.replace('/home')
@@ -84,6 +82,7 @@ const Login: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent class="center">
+            <h2>Veuillez-vous connecter</h2>
         { /* if the user has not yet connected their wallet, show a connect button */ }
           {
             !address && <IonButton onClick={connect}>Connect</IonButton>

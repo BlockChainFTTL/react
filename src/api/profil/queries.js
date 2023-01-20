@@ -55,43 +55,43 @@ query Profile ($id: ProfileId){
   }`;
 
 export const queryDefaultProfile = gql`
-  query DefaultProfile ($ethereumAddress: EthereumAddress ){
-    defaultProfile(request: { ethereumAddress: $ethereumAddress}) {
-      id
-      name
-      bio
-      isDefault
-      attributes {
-        displayType
-        traitType
-        key
-        value
+query DefaultProfile ($ethereumAddress: EthereumAddress = "0x8Dd100c7BB7eB96bE1F0205525A6F6A80D11C0A1"){
+  defaultProfile(request: { ethereumAddress: $ethereumAddress}) {
+    id
+    name
+    bio
+    isDefault
+    attributes {
+      displayType
+      traitType
+      key
+      value
+    }
+    followNftAddress
+    metadata
+    handle
+    picture {
+      ... on NftImage {
+        contractAddress
+        tokenId
+        uri
+        chainId
+        verified
       }
-      followNftAddress
-      metadata
-      handle
-      picture {
-        ... on NftImage {
-          contractAddress
-          tokenId
-          uri
-          chainId
-          verified
+      ... on MediaSet {
+        original {
+          url
+          mimeType
         }
-        ... on MediaSet {
-          original {
-            url
-            mimeType
-          }
-        }
-      }
-      stats {
-        totalFollowers
-        totalFollowing
-        totalPosts
       }
     }
-  }`;
+    stats {
+      totalFollowers
+      totalFollowing
+      totalPosts
+    }
+  }
+}`;
 
 export const queryExplorePublications = gql`
   query ExplorePublications {
